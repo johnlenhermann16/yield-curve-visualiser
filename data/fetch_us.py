@@ -20,11 +20,13 @@
 #     blank out the whole curve. Callers should still be prepared for
 #     unexpected exceptions (e.g. a bad API key) and handle them.
 
+import os
+
 from fredapi import Fred
 import pandas as pd
 import streamlit as st
 
-FRED_API_KEY = "***REMOVED***"
+FRED_API_KEY = os.environ.get("FRED_API_KEY", "***REMOVED***")
 
 US_SERIES = {
     "1M":  "DGS1MO",
