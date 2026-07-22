@@ -1,0 +1,15 @@
+# Runtime dependencies for the FastAPI backend (api/main.py).
+#
+# The API imports data/countries.py, which imports every data/fetch_*.py.
+# Those fetchers use @st.cache_data, so `streamlit` is a hard dependency of
+# the backend even though the API itself serves plain JSON. `openpyxl` is
+# needed by the UK fetcher to read the Bank of England Excel workbooks, and
+# `fredapi` by the US fetcher. Versions pinned to what the API was built and
+# tested against locally.
+fastapi==0.139.2
+uvicorn==0.51.0
+pandas==3.0.3
+requests==2.34.2
+fredapi==0.5.2
+openpyxl==3.1.5
+streamlit==1.59.2
