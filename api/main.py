@@ -23,13 +23,17 @@
 # Run with:
 #   uvicorn api.main:app --reload
 
+import os
 from concurrent.futures import ThreadPoolExecutor
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fredapi import Fred
 
 from data.countries import COUNTRY_FETCHERS
+
+FRED_API_KEY = os.environ.get("FRED_API_KEY", "***REMOVED***")
 
 app = FastAPI(
     title="Government Bond Yield Curve API",
@@ -300,6 +304,46 @@ def yields(
         "date": date_str,
         "countries": {country: payload for country, payload in results},
     }
+
+
+@app.get("/api/spread")
+def spread(
+    country: str = Query("US", description="Country code. US only for now."),
+    from_: str = Query(
+        None,
+        alias="from",
+        description="ISO start date. Defaults to 4 years ago.",
+    ),
+    to: str = Query(None, description="ISO end date. Defaults to today."),
+) -> dict:
+    """
+    Return the 2Y10Y Treasury spread (FRED series T10Y2Y, already computed by
+    FRED) as a date-indexed time series. Null/missing observations are dropped.
+    US only for now.
+    """
+    if country != "US":
+        raise HTTPException(
+            status_code=400,
+            detail="Spread chart currently available for US only",
+        )
+
+    to_str = _validate_date(to) if to else pd.Timestamp.today().date().isoformat()
+    from_str = (
+        _validate_date(from_)
+        if from_
+        else (pd.Timestamp(to_str) - pd.DateOffset(years=4)).date().isoformat()
+    )
+
+    fred = Fred(api_key=FRED_API_KEY)
+    series = fred.get_series(
+        "T10Y2Y", observation_start=from_str, observation_end=to_str
+    ).dropna()
+
+    data = [
+        {"date": d.date().isoformat(), "spread": float(v)}
+        for d, v in series.items()
+    ]
+    return {"country": country, "data": data}
 
 
 @app.get("/api/historical-context")
