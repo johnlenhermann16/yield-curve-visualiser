@@ -106,6 +106,28 @@ def _get_parsed_workbook(zip_bytes, chosen_file):
     return maturity_row, data_rows
 
 
+def _best_col_for_years(maturity_row, years):
+    """
+    Return the column index in `maturity_row` whose header value is
+    numerically closest to `years`, or None if no numeric header exists.
+
+    Matched by value (not fixed position) because maturity headers can differ
+    slightly between the 8 BoE workbooks — never assume column position is
+    stable across files.
+    """
+    best_col = None
+    best_diff = float("inf")
+    for col_idx in range(1, len(maturity_row)):
+        try:
+            diff = abs(float(maturity_row[col_idx]) - years)
+        except (TypeError, ValueError):
+            continue
+        if diff < best_diff:
+            best_diff = diff
+            best_col = col_idx
+    return best_col
+
+
 def find_file_for_year(excel_files, target_year):
     """Pick the workbook (from the BoE zip) whose date range covers target_year."""
     for fname in excel_files:
@@ -167,22 +189,142 @@ def get_uk_yields(date):
 
     yields = {}
     for label, years in TARGET_MATURITIES.items():
-        best_col = None
-        best_diff = float("inf")
-        for col_idx in range(1, len(maturity_row)):
-            val = maturity_row[col_idx]
-            try:
-                diff = abs(float(val) - years)
-                if diff < best_diff:
-                    best_diff = diff
-                    best_col = col_idx
-            except (TypeError, ValueError):
-                continue
+        best_col = _best_col_for_years(maturity_row, years)
         if best_col is not None:
             try:
-                yields[label] = float(row.iloc[best_col])
+                yields[label] = float(row[best_col])
             except (TypeError, ValueError):
                 print(f"  No data for {label}")
 
     actual_date = closest_date.date().isoformat() if yields else None
     return actual_date, pd.Series(yields)
+
+
+def _workbook_spread_frame(zip_bytes, chosen_file):
+    """
+    Parse one BoE workbook (reusing the on-disk parsed-workbook cache) and
+    return a date-indexed DataFrame with '2Y' and '10Y' yield columns, rows
+    with a missing 2Y or 10Y dropped.
+
+    NOTE: yields are read by column *label* (data_rows[c]), not row.iloc[c].
+    After _get_parsed_workbook does set_index(0), the remaining columns keep
+    labels 1..N that line up with the maturity_row header index, so label
+    access is what actually maps header col c -> the c-th maturity. (iloc is
+    off by one — it lands on the next-longer maturity.)
+    """
+    maturity_row, data_rows = _get_parsed_workbook(zip_bytes, chosen_file)
+    if data_rows.empty:
+        return pd.DataFrame(columns=["2Y", "10Y"])
+
+    c2 = _best_col_for_years(maturity_row, TARGET_MATURITIES["2Y"])
+    c10 = _best_col_for_years(maturity_row, TARGET_MATURITIES["10Y"])
+    frame = pd.DataFrame(
+        {
+            "2Y": pd.to_numeric(data_rows[c2], errors="coerce"),
+            "10Y": pd.to_numeric(data_rows[c10], errors="coerce"),
+        },
+        index=data_rows.index,
+    ).dropna()
+    return frame.sort_index()
+
+
+@st.cache_data(show_spinner=False)
+def get_uk_spread_series(from_date, to_date):
+    """
+    UK 10Y-minus-2Y gilt spread as a date-indexed daily series over
+    [from_date, to_date].
+
+    Returns a list of {"date": ISO str, "spread": float} dicts sorted
+    ascending by date — the same shape /api/spread returns for the US, so it
+    can drop in there later.
+
+    Spans as many of the 8 BoE workbooks as the range needs. Each workbook is
+    parsed via _get_parsed_workbook (whose pickle cache means the zip is never
+    re-parsed once warm), and @st.cache_data memoises the whole series per
+    (from_date, to_date). Duplicate dates and gaps at workbook seams are
+    reported (printed) rather than silently dropped/duplicated.
+    """
+    start = pd.Timestamp(from_date)
+    end = pd.Timestamp(to_date)
+
+    try:
+        zip_bytes = _get_boe_zip_bytes()
+    except requests.RequestException as e:
+        print(f"Error downloading BoE data: {e}")
+        return []
+
+    with zipfile.ZipFile(BytesIO(zip_bytes)) as z:
+        excel_files = sorted(f for f in z.namelist() if f.endswith(".xlsx"))
+
+    # Distinct workbooks covering every year in the range, chronological.
+    needed = []
+    for year in range(start.year, end.year + 1):
+        fname = find_file_for_year(excel_files, year)
+        if fname not in needed:
+            needed.append(fname)
+
+    frames = []
+    ranges = []  # (fname, min_date, max_date) for seam diagnostics
+    for fname in needed:
+        try:
+            frame = _workbook_spread_frame(zip_bytes, fname)
+        except Exception as e:
+            print(f"Error reading {fname}: {e}")
+            continue
+        if frame.empty:
+            continue
+        frames.append(frame)
+        ranges.append((fname, frame.index.min(), frame.index.max()))
+
+    if not frames:
+        return []
+
+    combined = pd.concat(frames).sort_index()
+
+    # Seam checks: report duplicates (overlapping workbooks) and gaps between
+    # the end of one workbook and the start of the next.
+    dupes = combined.index[combined.index.duplicated()].unique()
+    if len(dupes):
+        print(
+            f"[uk_spread] WARNING: {len(dupes)} duplicate date(s) across "
+            f"workbook seams: {[d.date().isoformat() for d in dupes]} "
+            f"— keeping first."
+        )
+        combined = combined[~combined.index.duplicated(keep="first")]
+    for (fa, _, a_max), (fb, b_min, _) in zip(ranges, ranges[1:]):
+        gap = (b_min - a_max).days
+        flag = "" if gap <= 4 else "  <-- GAP"
+        print(
+            f"[uk_spread] seam {fa} -> {fb}: {a_max.date()} -> {b_min.date()} "
+            f"({gap} calendar days){flag}"
+        )
+
+    combined = combined.loc[(combined.index >= start) & (combined.index <= end)]
+    spread = combined["10Y"] - combined["2Y"]
+    return [
+        {"date": d.date().isoformat(), "spread": float(v)}
+        for d, v in spread.items()
+    ]
+
+
+def _verify_spread():
+    """
+    Runnable self-check for get_uk_spread_series: fetches a range crossing the
+    2005->2016 and 2016->2025 workbook seams, prints the spread on three
+    stress-test dates, and asserts the output has no duplicate dates.
+    """
+    series = get_uk_spread_series("2005-01-01", "2026-06-30")
+    by_date = {row["date"]: row["spread"] for row in series}
+
+    print("\n--- spread on stress-test dates (10Y - 2Y, percentage points) ---")
+    for d in ["2008-09-15", "2020-03-09", "2022-09-23"]:
+        print(f"  {d}: {by_date.get(d)}")
+
+    dates = [row["date"] for row in series]
+    assert len(dates) == len(set(dates)), "duplicate dates in output series!"
+    assert dates == sorted(dates), "output series is not sorted by date!"
+    print(f"\n  n={len(series)}  earliest={dates[0]}  latest={dates[-1]}")
+
+
+if __name__ == "__main__":
+    _verify_spread()

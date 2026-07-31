@@ -32,6 +32,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fredapi import Fred
 
 from data.countries import COUNTRY_FETCHERS
+from data.fetch_uk import get_uk_spread_series
+from data.fetch_germany_spread import get_germany_spread_series
 
 FRED_API_KEY = os.environ.get("FRED_API_KEY", "***REMOVED***")
 
@@ -308,31 +310,39 @@ def yields(
 
 @app.get("/api/spread")
 def spread(
-    country: str = Query("US", description="Country code. US only for now."),
+    country: str = Query("US", description="Country name: US, UK or Germany."),
     from_: str = Query(
         None,
         alias="from",
-        description="ISO start date. Defaults to 4 years ago.",
+        description="ISO start date. Defaults to 1976-06-01 (T10Y2Y series start).",
     ),
     to: str = Query(None, description="ISO end date. Defaults to today."),
 ) -> dict:
     """
-    Return the 2Y10Y Treasury spread (FRED series T10Y2Y, already computed by
-    FRED) as a date-indexed time series. Null/missing observations are dropped.
-    US only for now.
+    Return the 2Y10Y spread as a date-indexed time series ({date, spread}).
+    US uses FRED's pre-computed T10Y2Y series; UK uses the BoE gilt spot curve
+    (10Y minus 2Y, computed in get_uk_spread_series); Germany uses the
+    Bundesbank's own daily bund series (get_germany_spread_series — NOT the ECB
+    euro-area AAA composite that fetch_germany.py reads, which isn't German
+    data). Missing observations are dropped.
+
+    Germany's series starts 1997-08-07, so a request reaching further back
+    simply returns fewer rows rather than erroring.
     """
-    if country != "US":
+    if country not in ("US", "UK", "Germany"):
         raise HTTPException(
             status_code=400,
-            detail="Spread chart currently available for US only",
+            detail="Spread chart currently available for US, UK and Germany only",
         )
 
     to_str = _validate_date(to) if to else pd.Timestamp.today().date().isoformat()
-    from_str = (
-        _validate_date(from_)
-        if from_
-        else (pd.Timestamp(to_str) - pd.DateOffset(years=4)).date().isoformat()
-    )
+    from_str = _validate_date(from_) if from_ else "1976-06-01"
+
+    if country == "UK":
+        return {"country": country, "data": get_uk_spread_series(from_str, to_str)}
+
+    if country == "Germany":
+        return {"country": country, "data": get_germany_spread_series(from_str, to_str)}
 
     fred = Fred(api_key=FRED_API_KEY)
     series = fred.get_series(
