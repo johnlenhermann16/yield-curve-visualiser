@@ -26,7 +26,7 @@ from fredapi import Fred
 import pandas as pd
 import streamlit as st
 
-FRED_API_KEY = os.environ.get("FRED_API_KEY", "***REMOVED***")
+FRED_API_KEY = os.environ["FRED_API_KEY"]
 
 US_SERIES = {
     "1M":  "DGS1MO",

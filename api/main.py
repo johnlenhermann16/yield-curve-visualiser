@@ -35,7 +35,7 @@ from data.countries import COUNTRY_FETCHERS
 from data.fetch_uk import get_uk_spread_series
 from data.fetch_germany_spread import get_germany_spread_series
 
-FRED_API_KEY = os.environ.get("FRED_API_KEY", "***REMOVED***")
+FRED_API_KEY = os.environ["FRED_API_KEY"]
 
 app = FastAPI(
     title="Government Bond Yield Curve API",
