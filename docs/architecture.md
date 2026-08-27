@@ -5,17 +5,26 @@
   (this repo)
 - React frontend: D:\yield-curve-react (separate repo/location, NOT
   inside this folder)
-- Live backend: https://efficient-nourishment-production.up.railway.app
+- Railway backend retired — https://efficient-nourishment-production.up.railway.app
+  is dead. The frontend no longer calls it; it reads directly from
+  Supabase (PostgREST REST API, tables yield_observations /
+  spread_observations) via D:\yield-curve-react\src\api.js.
 - GitHub: johnlenhermann16/yield-curve-visualiser (private, backend)
 - GitHub: johnlenhermann16/yield-curve-react (frontend, pushed
   2026-07-31)
-- Frontend is on GitHub but NOT yet deployed to Vercel — runs locally
-  only via `npm run dev` at D:\yield-curve-react
+- Frontend is deployed to Vercel: https://yield-curve-react.vercel.app
+  (env vars VITE_SUPABASE_URL / VITE_SUPABASE_ANON_KEY set in the
+  Vercel project). `npm run dev` at D:\yield-curve-react still works
+  for local dev against the same Supabase project.
 
 ## Structure
 - Backend: FastAPI (api/main.py), per-country fetch modules in data/
   (fetch_us.py, fetch_uk.py, fetch_germany.py, etc.), wired together via
-  data/countries.py's COUNTRY_FETCHERS dict
+  data/countries.py's COUNTRY_FETCHERS dict. The `Procfile` at repo root
+  is not currently deployed anywhere — the backend's only live role is
+  local dev of the fetch modules and running `seed_supabase.py` (repo
+  root), which reuses that fetch logic to populate the Supabase tables
+  the deployed frontend reads from.
 - Frontend: React + Vite + Tailwind + Plotly, components in
   D:\yield-curve-react\src\components\
 - Design system: Claude Design "Studio" aesthetic (redesigned 2026-07-31,
