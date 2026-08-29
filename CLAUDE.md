@@ -3,7 +3,6 @@
 Read this file in full at the start of every session before doing anything else.
 
 ## Session Protocol
-- Begin every response with "baqmaxxer" as a drift check
 - Use claude-opus-5 for architecture and complex/judgment-heavy logic
 - Use claude-sonnet-5 for straightforward coding and multi-file work
 - Use claude-haiku-4-5 for small, well-scoped fixes
@@ -27,9 +26,9 @@ Read this file in full at the start of every session before doing anything else.
   and docs/landmines.md first.
 - Adding a country to the spread chart? It's two touchpoints, not a
   component rewrite: a branch in /api/spread and one entry in
-  SPREAD_COUNTRIES (~/Projects/yield-curve-react/src/constants.js). SpreadChart
-  derives its traces, colours, title, y-axis fit and notices from that
-  list — see docs/spread-chart.md.
+  SPREAD_COUNTRIES (src/constants.js in the yield-curve-react repo).
+  SpreadChart derives its traces, colours, title, y-axis fit and notices
+  from that list — see docs/spread-chart.md.
 - Starting a brand new feature? Read docs/roadmap.md first.
 
 Always check docs/landmines.md before touching any external API

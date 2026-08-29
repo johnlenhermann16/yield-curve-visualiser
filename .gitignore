@@ -11,6 +11,7 @@ env/
 # Local secrets / env files
 .env
 .env.*
+!.env.example
 
 # On-disk fetch caches (re-downloaded at runtime; the BoE zip alone is ~39 MB
 # and must never be committed)

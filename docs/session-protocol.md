@@ -1,6 +1,5 @@
 # Session Protocol
 
-- Begin every response with "baqmaxxer" as a drift check
 - Use claude-opus-5 for architecture and complex/judgment-heavy logic
 - Use claude-sonnet-5 for straightforward coding and multi-file work
 - Use claude-haiku-4-5 for small, well-scoped fixes

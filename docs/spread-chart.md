@@ -9,9 +9,10 @@
   1997-08-07, so it renders shorter than US/UK on the Max range
 - Other countries: not yet attempted
 - The frontend list of spread-capable countries is SPREAD_COUNTRIES in
-  ~/Projects/yield-curve-react/src/constants.js — SpreadChart derives its traces,
-  title, y-fit and notices from it, so adding a country is one entry there
-  plus a branch in /api/spread (no per-country props/state any more)
+  src/constants.js in the yield-curve-react repo — SpreadChart derives its
+  traces, title, y-fit and notices from it, so adding a country is one
+  entry there plus a branch in /api/spread (no per-country props/state
+  any more)
 - The 1Y/2Y/4Y/10Y/Max buttons render in Dashboard.jsx, NOT inside
   SpreadChart. `years`/`setYears` are Dashboard state passed down as props,
   and RANGES lives in constants.js. SpreadChart's auto-widen effect still
