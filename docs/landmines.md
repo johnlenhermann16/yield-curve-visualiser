@@ -39,3 +39,27 @@
 - Expect exactly 2 requests per country per fetch in local dev, not 1 —
   React StrictMode double-invokes effects. Uniform doubling is healthy;
   a count that climbs with time is the dep-loop bug above
+- Plotly cannot read CSS custom properties, so YieldChart.jsx and
+  SpreadChart.jsx repeat the theme palette as literals. Since the
+  2026-08-29 light redesign those are: plot_bgcolor/paper_bgcolor
+  'rgba(0,0,0,0)' (transparent, so the plot inherits the white card),
+  text #0B0F14, muted #6B7280, axis line #D8DCE3, zero/event line
+  #C3C9D2, accent #0E9A92, y gridcolor rgba(11,15,20,0.07), inversion
+  band rgba(211,47,60,0.05), hoverlabel white on #D8DCE3. Change the
+  tokens in index.css and you MUST change these too — nothing enforces it
+- Inline styles beat media queries, always. Dashboard.jsx used to set
+  `<main style={{padding:'16px 32px 40px'}}>`, so the ≤900px rule that
+  narrowed the gutters could never apply and the cards sat 32px in while
+  the stat strip sat 16px in. Anything that has to respond to a
+  breakpoint belongs in a class (.dashboard-body), never inline
+- Chart height is --chart-h in index.css (520px, 340px at ≤700px), read
+  by both <Plot style> and every empty/loading/error placeholder. It was
+  five separate hardcoded 520s, which made the chart unreadable and
+  overflowing on a phone. Add a new placeholder → use the var
+- Do not `import Plotly from 'plotly.js'` in app code. That entry
+  references `global`, which Vite does not polyfill, and the page dies
+  with "ReferenceError: global is not defined". react-plotly.js imports
+  'plotly.js/dist/plotly'; if you ever genuinely need the Plotly object,
+  use that specifier. Usually you don't — <Plot useResizeHandler> already
+  handles resizing, including orientation changes that cross the 700px
+  breakpoint

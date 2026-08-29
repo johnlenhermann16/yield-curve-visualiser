@@ -1,0 +1,248 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; background: #F7F8FA; }
+    a { color: #0E9A92; text-underline-offset: 3px; }
+    a:hover { color: #0B7F79; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; background: #F7F8FA; font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.45; color: #0B0F14; -webkit-font-smoothing: antialiased;">
+
+  <!-- ══ ticker strip ══ -->
+  <div style="display: flex; align-items: center; gap: 26px; height: 28px; padding: 0 20px; background: #FFFFFF; border-bottom: 1px solid #ECEEF2; overflow: hidden; white-space: nowrap; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px;">
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">US 10Y</span><span style="font-variant-numeric: tabular-nums;">3.51</span><span style="color: #D32F3C;">▼ 5</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">UK 10Y</span><span style="font-variant-numeric: tabular-nums;">3.37</span><span style="color: #0A8F55;">▲ 2</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">DE 10Y</span><span style="font-variant-numeric: tabular-nums;">2.17</span><span style="color: #D32F3C;">▼ 3</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">FR 10Y</span><span style="font-variant-numeric: tabular-nums;">2.62</span><span style="color: #D32F3C;">▼ 4</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">IT 10Y</span><span style="font-variant-numeric: tabular-nums;">4.18</span><span style="color: #0A8F55;">▲ 1</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">ES 10Y</span><span style="font-variant-numeric: tabular-nums;">3.24</span><span style="color: #D32F3C;">▼ 2</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">CA 10Y</span><span style="font-variant-numeric: tabular-nums;">2.95</span><span style="color: #0A8F55;">▲ 3</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">CH 10Y</span><span style="font-variant-numeric: tabular-nums;">1.28</span><span style="color: #D32F3C;">▼ 1</span></span>
+    <span style="display: inline-flex; gap: 7px;"><span style="color: #6B7280;">JP 10Y</span><span style="font-variant-numeric: tabular-nums;">0.51</span><span style="color: #0A8F55;">▲ 1</span></span>
+  </div>
+
+  <!-- ══ sticky header ══ -->
+  <div style="display: flex; align-items: center; gap: 28px; height: 56px; padding: 0 28px; background: #FFFFFF; border-bottom: 1px solid #ECEEF2;">
+
+    <span style="font-weight: 600; font-size: 13px; letter-spacing: -0.01em; white-space: nowrap;">Yield Curve Visualiser</span>
+
+    <!-- the only tab bar: sliding indicator sits under the active tab -->
+    <div style="position: relative; display: flex; gap: 24px; align-self: stretch; align-items: center;">
+      <span style="font-size: 13px; font-weight: 500; color: #0B0F14;">Yield Curve</span>
+      <span style="font-size: 13px; font-weight: 500; color: #6B7280;">2Y10Y Spread</span>
+      <span style="position: absolute; left: 0; bottom: 0; width: 72px; height: 2px; border-radius: 1px 1px 0 0; background: #0E9A92;"></span>
+    </div>
+
+  </div>
+
+  <!-- ══ stat strip ══ -->
+  <div style="display: flex; margin: 20px 28px 0; background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); overflow: hidden;">
+    <div style="flex: 1; padding: 14px 20px; display: flex; flex-direction: column; gap: 5px;">
+      <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">US 10Y</span>
+      <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; color: #0E9A92;">3.51%</span>
+      <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: #D32F3C; font-variant-numeric: tabular-nums;">▼ 5 bp</span>
+    </div>
+    <div style="flex: 1; padding: 14px 20px; border-left: 1px solid #ECEEF2; display: flex; flex-direction: column; gap: 5px;">
+      <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">US 2s10s</span>
+      <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums; line-height: 1.15; color: #0E9A92;">−0.71%</span>
+      <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: #D32F3C; font-variant-numeric: tabular-nums;">▼ 3 bp</span>
+    </div>
+    <div style="flex: 1; padding: 14px 20px; border-left: 1px solid #ECEEF2; display: flex; flex-direction: column; gap: 5px;">
+      <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">Curve Status</span>
+      <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 22px; font-weight: 600; line-height: 1.15; display: flex; align-items: center; gap: 9px;">
+        <span style="width: 8px; height: 8px; border-radius: 50%; background: #D32F3C; flex: none;"></span>Inverted
+      </span>
+      <span style="font-size: 11px; color: #6B7280;">2Y above 10Y</span>
+    </div>
+  </div>
+
+  <!-- ══ body ══ -->
+  <div style="display: flex; flex-direction: column; gap: 18px; padding: 18px 28px 44px;">
+
+    <!-- ── controls card ── -->
+    <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 20px 22px; display: flex; flex-direction: column; gap: 20px;">
+
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-size: 11px; letter-spacing: 0.04em; font-weight: 500; text-transform: uppercase; color: #6B7280;">Countries</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #0E9A92; background: rgba(14,154,146,0.10); color: #0B0F14;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #2a78d6;"></span>US</span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #0E9A92; background: rgba(14,154,146,0.10); color: #0B0F14;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #eb6834;"></span>UK</span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; color: #6B7280;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #4a3aa7;"></span>Germany</span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; color: #6B7280;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #f04e2e;"></span>France<span style="font-size: 10px; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 4px; background: #F2F4F7; color: #6B7280;">10Y only</span></span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #0E9A92; background: rgba(14,154,146,0.10); color: #0B0F14;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #008300;"></span>Italy<span style="font-size: 10px; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 4px; background: #F2F4F7; color: #6B7280;">10Y only</span></span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; color: #6B7280;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #eda100;"></span>Spain<span style="font-size: 10px; letter-spacing: 0.04em; padding: 2px 6px; border-radius: 4px; background: #F2F4F7; color: #6B7280;">10Y only</span></span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; color: #6B7280;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #e87ba4;"></span>Canada</span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; color: #6B7280;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #a15c2e;"></span>Switzerland</span>
+          <span style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; color: #6B7280;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #c0392b;"></span>Japan</span>
+        </div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <span style="font-size: 11px; letter-spacing: 0.04em; font-weight: 500; text-transform: uppercase; color: #6B7280;">Dates <span style="text-transform: none; letter-spacing: 0; opacity: 0.75;">— up to 3</span></span>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="display: inline-flex; align-items: center; gap: 9px; min-height: 36px; padding: 0 13px; border-radius: 6px; border: 1px solid #0E9A92; background: #FFFFFF; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; font-variant-numeric: tabular-nums;">2023-01-13
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            </span>
+            <span style="font-size: 10px; color: #0E9A92;">Near: CPI peak turn (Jan 23)</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="display: inline-flex; align-items: center; gap: 9px; min-height: 36px; padding: 0 13px; border-radius: 6px; border: 1px solid #ECEEF2; background: #FFFFFF; font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 12px; font-variant-numeric: tabular-nums;">2019-08-27
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#6B7280" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
+            </span>
+            <span style="width: 30px; height: 30px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; color: #6B7280; font-size: 13px;">✕</span>
+          </div>
+          <span style="display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 6px; border: 1px dashed #D8DCE3; color: #0E9A92; font-size: 12px;">+ Compare date</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── chart card ── -->
+    <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 20px 22px 22px;">
+
+      <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 4px;">
+        <span style="font-size: 15px; font-weight: 600; letter-spacing: -0.015em;">Government bond yield curve</span>
+        <span style="font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: 11px; color: #6B7280; font-variant-numeric: tabular-nums;">2023-01-13</span>
+      </div>
+      <p style="margin: 0 0 18px; font-size: 11px; color: #6B7280;">Solid line = first date · dashed = comparison · diamond = 10Y-only country · shaded band = inverted segment</p>
+
+      <svg viewBox="0 0 1240 372" width="100%" style="display: block; overflow: visible;" role="img" aria-label="Yield curve for US, UK and Italy on 2023 January 13">
+        <!-- inversion band: 6M through 10Y, where the US curve slopes down -->
+        <rect x="284" y="14" width="672" height="306" fill="rgba(211,47,60,0.07)"/>
+        <text x="290" y="28" font-family="'IBM Plex Mono', monospace" font-size="10" fill="#D32F3C" opacity="0.85">inverted</text>
+
+        <!-- horizontal gridlines only -->
+        <g stroke="rgba(11,15,20,0.07)" stroke-width="1">
+          <line x1="60" y1="91" x2="1180" y2="91"/>
+          <line x1="60" y1="179" x2="1180" y2="179"/>
+          <line x1="60" y1="267" x2="1180" y2="267"/>
+        </g>
+        <!-- single x hairline, no y axis line, no tick marks -->
+        <line x1="60" y1="320" x2="1180" y2="320" stroke="#D8DCE3" stroke-width="1"/>
+
+        <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6B7280">
+          <text x="48" y="95" text-anchor="end">4.5%</text>
+          <text x="48" y="183" text-anchor="end">4.0%</text>
+          <text x="48" y="271" text-anchor="end">3.5%</text>
+        </g>
+
+        <g font-family="'IBM Plex Mono', monospace" font-size="11" fill="#6B7280" text-anchor="middle">
+          <text x="60" y="340">1M</text><text x="172" y="340">3M</text><text x="284" y="340">6M</text>
+          <text x="396" y="340">1Y</text><text x="508" y="340">2Y</text><text x="620" y="340">3Y</text>
+          <text x="732" y="340">5Y</text><text x="844" y="340">7Y</text><text x="956" y="340">10Y</text>
+          <text x="1068" y="340">20Y</text><text x="1180" y="340">30Y</text>
+        </g>
+
+        <!-- US -->
+        <polyline points="60,82 172,62 284,39 396,64 508,140 620,196 732,248 844,253 956,265 1068,216 1180,246" fill="none" stroke="#2a78d6" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+        <g fill="#2a78d6" stroke="#FFFFFF" stroke-width="1.5">
+          <circle cx="60" cy="82" r="3.6"/><circle cx="172" cy="62" r="3.6"/><circle cx="284" cy="39" r="3.6"/>
+          <circle cx="396" cy="64" r="3.6"/><circle cx="508" cy="140" r="3.6"/><circle cx="620" cy="196" r="3.6"/>
+          <circle cx="732" cy="248" r="3.6"/><circle cx="844" cy="253" r="3.6"/><circle cx="956" cy="265" r="3.6"/>
+          <circle cx="1068" cy="216" r="3.6"/><circle cx="1180" cy="246" r="3.6"/>
+        </g>
+
+        <!-- UK -->
+        <polyline points="508,278 732,304 956,290 1068,214 1180,235" fill="none" stroke="#eb6834" stroke-width="2.25" stroke-linejoin="round" stroke-linecap="round"/>
+        <g fill="#eb6834" stroke="#FFFFFF" stroke-width="1.5">
+          <circle cx="508" cy="278" r="3.6"/><circle cx="732" cy="304" r="3.6"/><circle cx="956" cy="290" r="3.6"/>
+          <circle cx="1068" cy="214" r="3.6"/><circle cx="1180" cy="235" r="3.6"/>
+        </g>
+
+        <!-- Italy: 10Y only, diamond -->
+        <rect x="947" y="138" width="18" height="18" transform="rotate(45 956 147)" fill="#008300" stroke="#FFFFFF" stroke-width="1.5"/>
+
+        <!-- selective direct labels, not a number on every point -->
+        <g font-family="'IBM Plex Mono', monospace" font-size="11" font-weight="500">
+          <text x="1192" y="250" fill="#2a78d6">US 3.62</text>
+          <text x="1192" y="239" fill="#eb6834" opacity="0">UK</text>
+          <text x="974" y="144" fill="#008300">Italy 4.18</text>
+        </g>
+      </svg>
+
+      <div style="display: flex; gap: 22px; margin-top: 14px; padding-top: 14px; border-top: 1px solid #ECEEF2; font-size: 11px; color: #6B7280;">
+        <span style="display: inline-flex; align-items: center; gap: 7px;"><span style="width: 20px; height: 2.5px; border-radius: 2px; background: #2a78d6;"></span>US · 2023-01-13</span>
+        <span style="display: inline-flex; align-items: center; gap: 7px;"><span style="width: 20px; height: 2.5px; border-radius: 2px; background: #eb6834;"></span>UK · 2023-01-13</span>
+        <span style="display: inline-flex; align-items: center; gap: 7px;"><span style="width: 9px; height: 9px; background: #008300; transform: rotate(45deg);"></span>Italy · 2023-01-13</span>
+      </div>
+    </div>
+
+    <!-- ── historical context ── -->
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
+      <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 18px 20px; display: flex; flex-direction: column; gap: 7px;">
+        <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #D32F3C;">2022 – 2023</span>
+        <span style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">Fastest rate hike cycle in 40 years</span>
+        <p style="margin: 0; font-size: 12px; color: #6B7280; text-wrap: pretty;">The Federal Reserve raised rates from near zero to over 5% in eighteen months to fight the sharpest inflation since the early 1980s. Short-dated yields rose far faster than long-dated ones, driving the curve deeply inverted — historically a reliable recession signal.</p>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 18px 20px; display: flex; flex-direction: column; gap: 7px;">
+        <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #0E9A92;">Reading this curve</span>
+        <span style="font-size: 14px; font-weight: 600; letter-spacing: -0.01em;">US curve is inverted</span>
+        <p style="margin: 0; font-size: 12px; color: #6B7280; text-wrap: pretty;">The 2Y yields 4.22% while the 10Y yields 3.51% — a spread of −71bp. Investors are accepting less return to lock money up for longer, which happens when they expect rates, growth, or both to fall.</p>
+      </div>
+    </div>
+
+    <!-- ── curve explainer ── -->
+    <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 20px 22px; display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 12px; font-weight: 500; padding: 7px 14px; border-radius: 6px; background: #0E9A92; color: #FFFFFF;">US</span>
+        <span style="font-size: 12px; padding: 7px 14px; border-radius: 6px; border: 1px solid #D8DCE3; color: #6B7280;">UK</span>
+        <span style="font-size: 12px; padding: 7px 14px; border-radius: 6px; border: 1px solid #D8DCE3; color: #6B7280;">Italy</span>
+        <span style="margin-left: 8px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; padding: 4px 9px; border-radius: 5px; background: rgba(211,47,60,0.10); color: #D32F3C;">Inverted</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 32px;">
+        <div style="display: flex; gap: 10px;"><span style="color: #0E9A92; flex: none;">—</span><span style="font-size: 12px; color: #6B7280;">Short rates sit above long rates: the 2Y pays 4.22%, the 10Y only 3.51%.</span></div>
+        <div style="display: flex; gap: 10px;"><span style="color: #0E9A92; flex: none;">—</span><span style="font-size: 12px; color: #6B7280;">Every US recession since 1970 was preceded by an inversion of this pair.</span></div>
+        <div style="display: flex; gap: 10px;"><span style="color: #0E9A92; flex: none;">—</span><span style="font-size: 12px; color: #6B7280;">The lag is long and variable — inversion has led recessions by 6 to 24 months.</span></div>
+        <div style="display: flex; gap: 10px;"><span style="color: #0E9A92; flex: none;">—</span><span style="font-size: 12px; color: #6B7280;">Un-inversion, not inversion, has historically marked the closer turning point.</span></div>
+      </div>
+    </div>
+
+    <!-- ── bottom grid ── -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1.4fr; gap: 18px;">
+      <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 18px 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">US 2Y · 1Y trail</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0A8F55;">▲ 118 bp</span>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; margin-top: 5px; font-variant-numeric: tabular-nums;">4.22%</div>
+        <svg viewBox="0 0 240 48" width="100%" height="48" style="margin-top: 10px; display: block;"><polyline points="0,42 24,39 48,33 72,30 96,22 120,25 144,16 168,12 192,15 216,8 240,6" fill="none" stroke="#2a78d6" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 18px 20px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+          <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">US 10Y · 1Y trail</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #0A8F55;">▲ 41 bp</span>
+        </div>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 19px; font-weight: 600; margin-top: 5px; font-variant-numeric: tabular-nums;">3.51%</div>
+        <svg viewBox="0 0 240 48" width="100%" height="48" style="margin-top: 10px; display: block;"><polyline points="0,34 24,29 48,24 72,18 96,12 120,20 144,14 168,22 192,18 216,26 240,24" fill="none" stroke="#2a78d6" stroke-width="1.75" stroke-linejoin="round" stroke-linecap="round"/></svg>
+      </div>
+      <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; box-shadow: 0 1px 2px rgba(11,15,20,0.04), 0 1px 3px rgba(11,15,20,0.03); padding: 18px 20px; display: flex; flex-direction: column;">
+        <span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">2Y10Y spread · US</span>
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 25px; font-weight: 600; margin: 12px 0 4px; font-variant-numeric: tabular-nums; color: #D32F3C;">−0.71%</div>
+        <span style="font-size: 12px; color: #6B7280;">Inverted since 2022-07-05 — 192 trading days.</span>
+        <div style="margin-top: auto; padding-top: 14px;">
+          <span style="display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; padding: 8px 15px; border-radius: 6px; border: 1px solid #D8DCE3; color: #0B0F14;">View history
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── footer ── -->
+    <div style="display: flex; flex-wrap: wrap; gap: 8px 26px; padding-top: 20px; border-top: 1px solid #ECEEF2; font-size: 11px; color: #6B7280;">
+      <span>Sources: FRED · Bank of England · ECB · Bundesbank · Bank of Canada · SNB · Japan MOF</span>
+      <span style="margin-left: auto;">Indicative data for research and education. Not investment advice.</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

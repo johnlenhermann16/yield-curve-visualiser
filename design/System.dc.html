@@ -1,0 +1,180 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+  <style>
+    body { margin: 0; background: #F7F8FA; }
+    a { color: #0E9A92; text-underline-offset: 3px; }
+    a:hover { color: #0B7F79; }
+
+    /* The motion spec, live. Press anything below to feel it.
+       Curves and durations match the tokens already in the app's index.css. */
+    .sys {
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+      --fast: 120ms;
+      --base: 180ms;
+    }
+    .press {
+      cursor: pointer; font-family: inherit;
+      transition: transform var(--fast) var(--ease-out),
+                  background var(--fast) var(--ease-out),
+                  border-color var(--fast) var(--ease-out),
+                  color var(--fast) var(--ease-out),
+                  box-shadow var(--fast) var(--ease-out);
+    }
+    .press:active { transform: scale(0.97); }
+
+    /* Hover is gated so a tap on a phone never latches a hover state. */
+    @media (hover: hover) and (pointer: fine) {
+      .btn-pri:hover  { background: #0B7F79; border-color: #0B7F79; }
+      .btn-sec:hover  { background: #F2F4F7; color: #0B0F14; }
+      .chip-s:hover   { border-color: #0E9A92; }
+      .pill-s:hover   { border-color: #0E9A92; color: #0B0F14; }
+      .card-h:hover   { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(11,15,20,0.06), 0 4px 10px rgba(11,15,20,0.05); }
+    }
+    .card-h { transition: transform var(--fast) var(--ease-out), box-shadow var(--fast) var(--ease-out); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .press, .card-h { transition: background var(--fast) linear, color var(--fast) linear; }
+      .press:active, .card-h:hover { transform: none; }
+    }
+  </style>
+</helmet>
+
+<div class="sys" style="width: 940px; background: #F7F8FA; font-family: 'Inter Tight', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 13px; line-height: 1.45; color: #0B0F14; padding: 34px; -webkit-font-smoothing: antialiased;">
+
+  <div style="margin-bottom: 30px;">
+    <div style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em;">Design system</div>
+    <p style="margin: 5px 0 0; font-size: 13px; color: #6B7280;">Light theme, teal accent. Every control below is live — press one to feel the motion.</p>
+  </div>
+
+  <!-- ── surfaces & ink ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px; margin-bottom: 18px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 16px;">Surfaces &amp; ink</div>
+    <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px;">
+      <div><div style="height: 52px; border-radius: 8px; background: #F7F8FA; border: 1px solid #ECEEF2;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Page</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#F7F8FA</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #FFFFFF; border: 1px solid #ECEEF2;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Card</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#FFFFFF</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #F2F4F7; border: 1px solid #ECEEF2;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Inset</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#F2F4F7</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #0B0F14;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Text</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#0B0F14</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #6B7280;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Muted</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#6B7280</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #FFFFFF; border: 1px solid #D8DCE3;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Divider</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#ECEEF2 / #D8DCE3</div></div>
+    </div>
+  </div>
+
+  <!-- ── accent & semantic ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px; margin-bottom: 18px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 16px;">Accent &amp; semantic</div>
+    <div style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;">
+      <div><div style="height: 52px; border-radius: 8px; background: #0E9A92;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Accent</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#0E9A92</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #0B7F79;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Accent hover</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#0B7F79</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: rgba(14,154,146,0.10); border: 1px solid #ECEEF2;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Accent soft</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">10% tint</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #0A8F55;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Positive</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#0A8F55</div></div>
+      <div><div style="height: 52px; border-radius: 8px; background: #D32F3C;"></div><div style="margin-top: 7px; font-size: 12px; font-weight: 500;">Negative</div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#D32F3C</div></div>
+    </div>
+    <p style="margin: 16px 0 0; font-size: 12px; color: #6B7280;">Hover <em>darkens</em> on a light theme — the inverse of the current dark build, where it lightened.</p>
+  </div>
+
+  <!-- ── type ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px; margin-bottom: 18px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 18px;">Type — Inter Tight for everything, IBM Plex Mono for figures</div>
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="display: flex; align-items: baseline; gap: 20px;"><span style="width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280; flex: none;">20 / 600 / −0.02em</span><span style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em;">Government bond yields</span></div>
+      <div style="display: flex; align-items: baseline; gap: 20px;"><span style="width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280; flex: none;">15 / 600 / −0.015em</span><span style="font-size: 15px; font-weight: 600; letter-spacing: -0.015em;">Card and section titles</span></div>
+      <div style="display: flex; align-items: baseline; gap: 20px;"><span style="width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280; flex: none;">13 / 400</span><span style="font-size: 13px;">Body copy. The default size for anything a reader actually reads.</span></div>
+      <div style="display: flex; align-items: baseline; gap: 20px;"><span style="width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280; flex: none;">12 / 400 / muted</span><span style="font-size: 12px; color: #6B7280;">Secondary copy, captions, chart notes.</span></div>
+      <div style="display: flex; align-items: baseline; gap: 20px;"><span style="width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280; flex: none;">11 / 0.06em / caps</span><span style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280;">Section label</span></div>
+      <div style="display: flex; align-items: baseline; gap: 20px;"><span style="width: 150px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280; flex: none;">mono 22 / 600</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; font-variant-numeric: tabular-nums;">3.51%  −0.71%  4.22%</span></div>
+    </div>
+  </div>
+
+  <!-- ── controls, live ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px; margin-bottom: 18px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 6px;">Controls — press to feel it</div>
+    <p style="margin: 0 0 18px; font-size: 12px; color: #6B7280;">Every pressable element dips to 97% over 120ms and eases back. Nothing else moves.</p>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 20px;">
+      <button class="press btn-pri" style="font-size: 12px; font-weight: 500; padding: 9px 17px; border-radius: 6px; border: 1px solid #0E9A92; background: #0E9A92; color: #FFFFFF;">US</button>
+      <button class="press btn-sec" style="font-size: 12px; font-weight: 500; padding: 9px 17px; border-radius: 6px; border: 1px solid #D8DCE3; background: #FFFFFF; color: #0B0F14;">View history</button>
+      <button class="press" style="font-size: 12px; padding: 9px 17px; border-radius: 6px; border: 1px dashed #D8DCE3; background: transparent; color: #0E9A92;">+ Compare date</button>
+      <button class="press" style="width: 32px; height: 32px; border-radius: 6px; border: 1px solid transparent; background: transparent; color: #6B7280; font-size: 13px;">✕</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 20px;">
+      <button class="press chip-s" style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #0E9A92; background: rgba(14,154,146,0.10); color: #0B0F14;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #2a78d6;"></span>US</button>
+      <button class="press chip-s" style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; background: transparent; color: #6B7280;"><span style="width: 22px; height: 3px; border-radius: 2px; background: #eb6834;"></span>UK</button>
+      <button class="press chip-s" style="display: inline-flex; align-items: center; gap: 9px; padding: 8px 13px 8px 11px; border-radius: 6px; font-size: 12px; border: 1px solid #ECEEF2; background: transparent; color: #6B7280;"><span style="width: 9px; height: 9px; border-radius: 50%; background: #008300;"></span>Italy<span style="font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #F2F4F7; color: #6B7280;">10Y only</span></button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 6px;">
+      <button class="press" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.04em; padding: 6px 11px; border-radius: 6px; border: 1px solid #D8DCE3; background: transparent; color: #6B7280;">1Y</button>
+      <button class="press" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.04em; padding: 6px 11px; border-radius: 6px; border: 1px solid #D8DCE3; background: transparent; color: #6B7280;">2Y</button>
+      <button class="press" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.04em; padding: 6px 11px; border-radius: 6px; border: 1px solid #0E9A92; background: #0E9A92; color: #FFFFFF;">4Y</button>
+      <button class="press" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.04em; padding: 6px 11px; border-radius: 6px; border: 1px solid #D8DCE3; background: transparent; color: #6B7280;">10Y</button>
+      <button class="press" style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.04em; padding: 6px 11px; border-radius: 6px; border: 1px solid #D8DCE3; background: transparent; color: #6B7280;">Max</button>
+    </div>
+  </div>
+
+  <!-- ── motion spec ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px; margin-bottom: 18px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 16px;">Motion</div>
+    <div style="display: grid; grid-template-columns: 210px 148px 1fr; gap: 11px 20px; font-size: 12px;">
+      <div style="font-weight: 500;">Press feedback</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">120ms ease-out</div><div style="color: #6B7280;">scale(0.97), every pressable element</div>
+      <div style="font-weight: 500;">Tab underline</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">180ms standard</div><div style="color: #6B7280;">translateX + width, one shared indicator</div>
+      <div style="font-weight: 500;">Hover lift</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">120ms ease-out</div><div style="color: #6B7280;">translateY(−1px) + shadow, pointer devices only</div>
+      <div style="font-weight: 500;">Chip select</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">120ms ease-out</div><div style="color: #6B7280;">scale in from 0.96 — already in the app</div>
+      <div style="font-weight: 500;">Data change flash</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">70ms linear</div><div style="color: #6B7280;">teal wash on a real value change only</div>
+      <div style="font-weight: 500;">Chart redraw</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">300ms cubic-in-out</div><div style="color: #6B7280;">Plotly, 0ms under reduced motion</div>
+      <div style="font-weight: 500;">Ticker</div><div style="font-family: 'IBM Plex Mono', monospace; color: #6B7280;">36s linear</div><div style="color: #6B7280;">constant motion, so linear; frozen under reduced motion</div>
+    </div>
+    <p style="margin: 18px 0 0; font-size: 12px; color: #6B7280; text-wrap: pretty;">No entrance staggers, no page transitions, no scroll animation. The ticker is the only thing that moves without being touched.</p>
+  </div>
+
+  <!-- ── chart marks ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px; margin-bottom: 18px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 16px;">Chart marks</div>
+    <div style="display: grid; grid-template-columns: 210px 1fr; gap: 11px 20px; font-size: 12px;">
+      <div style="font-weight: 500;">Plot background</div><div style="color: #6B7280;">transparent — inherits the white card, no inset panel</div>
+      <div style="font-weight: 500;">Grid</div><div style="color: #6B7280;">horizontal only, <span style="font-family: 'IBM Plex Mono', monospace;">rgba(11,15,20,0.07)</span>; no vertical grid, no y-axis line</div>
+      <div style="font-weight: 500;">Axis</div><div style="color: #6B7280;">single x hairline <span style="font-family: 'IBM Plex Mono', monospace;">#D8DCE3</span>, tick marks dropped</div>
+      <div style="font-weight: 500;">Lines</div><div style="color: #6B7280;">2.25px, round joins — up from 2px to hold the two lightest country hues on white</div>
+      <div style="font-weight: 500;">Markers</div><div style="color: #6B7280;">3.6px radius with a 1.5px white ring where marks overlap</div>
+      <div style="font-weight: 500;">Inversion band</div><div style="color: #6B7280;"><span style="font-family: 'IBM Plex Mono', monospace;">rgba(211,47,60,0.07)</span> — down from 14%, which is far heavier on white</div>
+      <div style="font-weight: 500;">Tooltip</div><div style="color: #6B7280;">white, 1px <span style="font-family: 'IBM Plex Mono', monospace;">#D8DCE3</span> border, mono figures, crosshair on line charts</div>
+    </div>
+  </div>
+
+  <!-- ── country palette + the audit ── -->
+  <div style="background: #FFFFFF; border: 1px solid #ECEEF2; border-radius: 10px; padding: 22px;">
+    <div style="font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #6B7280; margin-bottom: 6px;">Country series — fixed by spec, unchanged</div>
+    <p style="margin: 0 0 18px; font-size: 12px; color: #6B7280;">These nine are set in <span style="font-family: 'IBM Plex Mono', monospace;">src/constants.js</span> and are not touched by this redesign.</p>
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 20px;">
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; height: 3px; border-radius: 2px; background: #2a78d6;"></span><span style="font-size: 12px; flex: 1;">US</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#2a78d6</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; height: 3px; border-radius: 2px; background: #eb6834;"></span><span style="font-size: 12px; flex: 1;">UK</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#eb6834</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; height: 3px; border-radius: 2px; background: #4a3aa7;"></span><span style="font-size: 12px; flex: 1;">Germany</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#4a3aa7</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 11px; height: 11px; border-radius: 50%; background: #f04e2e;"></span><span style="font-size: 12px; flex: 1;">France</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#f04e2e</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 11px; height: 11px; border-radius: 50%; background: #008300;"></span><span style="font-size: 12px; flex: 1;">Italy</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#008300</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 11px; height: 11px; border-radius: 50%; background: #eda100;"></span><span style="font-size: 12px; flex: 1;">Spain</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#eda100</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; height: 3px; border-radius: 2px; background: #e87ba4;"></span><span style="font-size: 12px; flex: 1;">Canada</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#e87ba4</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; height: 3px; border-radius: 2px; background: #a15c2e;"></span><span style="font-size: 12px; flex: 1;">Switzerland</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#a15c2e</span></div>
+      <div style="display: flex; align-items: center; gap: 10px;"><span style="width: 28px; height: 3px; border-radius: 2px; background: #c0392b;"></span><span style="font-size: 12px; flex: 1;">Japan</span><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #6B7280;">#c0392b</span></div>
+    </div>
+
+    <div style="margin-top: 20px; padding: 16px 18px; border-radius: 8px; background: #F7F8FA; border: 1px solid #ECEEF2;">
+      <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">Two findings from running the palette validator — neither is caused by this redesign</div>
+      <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #6B7280;">
+        <div style="display: flex; gap: 10px;"><span style="color: #D32F3C; flex: none;">1</span><span><strong style="color: #0B0F14; font-weight: 500;">Japan and Switzerland are near-identical.</strong> ΔE 0.8 under deuteranopia and 8.4 with normal colour vision — below the floor of 15. The Python side already fixed this by moving Japan to a teal <span style="font-family: 'IBM Plex Mono', monospace;">#1a9c8f</span>; the React app still carries the crimson, so the two halves of the project disagree on Japan today.</span></div>
+        <div style="display: flex; gap: 10px;"><span style="color: #6B7280; flex: none;">2</span><span><strong style="color: #0B0F14; font-weight: 500;">Spain and Canada fall under 3:1 on white</strong> (2.11 and 2.62). The legend and hover labels already carry identity in text, which is the sanctioned relief — the heavier 2.25px stroke helps too.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

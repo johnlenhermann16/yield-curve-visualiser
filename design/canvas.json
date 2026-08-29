@@ -1,0 +1,32 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",   "x": 0,    "y": 0, "w": 1440, "h": 1700, "title": "Dashboard — Yield Curve", "print": "flow" },
+    { "file": "Spread.dc.html", "x": 1560, "y": 0, "w": 1440, "h": 1000, "title": "Dashboard — 2Y10Y Spread", "print": "flow" },
+    { "file": "Mobile.dc.html", "x": 3120, "y": 0, "w": 390,  "h": 1700, "title": "Phone — 390px", "print": "flow" },
+    { "file": "System.dc.html", "x": 3630, "y": 0, "w": 940,  "h": 1760, "title": "Design system", "print": "flow", "is_interactive": true }
+  ],
+  "annotations": [
+    {
+      "id": "layout-note",
+      "x": 0,
+      "y": -150,
+      "w": 480,
+      "text": "Top header + tabs, sidebar removed.\nThe chart tabs used to exist in BOTH the sidebar and the chart card — now there is one tab bar, in the header, with a sliding underline."
+    },
+    {
+      "id": "chart-note",
+      "x": 1560,
+      "y": -150,
+      "w": 480,
+      "text": "Tufte-lean chart: transparent plot, horizontal grid only, no y-axis line, tick marks dropped.\nThe below-zero region is shaded because \"inverted\" is the whole point of this chart."
+    },
+    {
+      "id": "system-note",
+      "x": 3630,
+      "y": -150,
+      "w": 520,
+      "text": "Press any control on this sheet — the motion is live, not drawn.\nAlso carries two colour findings from the palette validator that predate this redesign."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
