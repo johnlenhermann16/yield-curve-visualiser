@@ -109,7 +109,8 @@ def _fetch_one_country(country: str, date_str: str) -> dict:
     try:
         actual_date, yields = fetcher(date_str)
     except Exception as exc:  # noqa: BLE001 — surface any fetcher failure as data
-        return {"actual_date": None, "yields": {}, "error": str(exc)}
+        print(f"[{country}] fetch failed: {exc!r}")
+        return {"actual_date": None, "yields": {}, "error": f"Failed to fetch data for {country}."}
 
     if yields is None or yields.empty:
         return {
