@@ -34,6 +34,13 @@
 - Spain (`#eda100`, 2.11:1) and Canada (`#e87ba4`, 2.62:1) fall under 3:1
   contrast against white. Treated as acceptable for now since the legend
   and hover labels carry country identity in text.
+- **Bundesbank's SDMX API has an uncertain long-term future.** It's the
+  correct source for Germany's 2Y10Y spread, but its own documentation
+  page currently 404s, suggesting a migration or retirement is underway.
+  No confirmed shutdown date. See docs/landmines.md.
+- **Canada, Switzerland, and Japan curve data hasn't been independently
+  re-verified for correctness** since it was first added in an earlier
+  session. See docs/countries.md.
 
 ## Not Yet Done
 - Fix `data/fetch_germany.py` to source from Bundesbank instead of the

@@ -56,15 +56,24 @@ stack.
 | UK | Bank of England | Full curve |
 | Germany | ECB euro-area AAA composite (curve) / Bundesbank (spread) | Full curve, but see caveat below |
 | France, Italy, Spain | ECB | 10Y only |
-| Canada, Switzerland, Japan | — | Full curve; no spread data yet |
+| Canada, Switzerland, Japan | — | Full curve; no spread data yet — correctness not independently re-verified this session |
 
-**Known data caveat:** Germany's full-curve endpoint currently uses the
-ECB's euro-area AAA composite as a stand-in, which has been confirmed off
-by up to +71bp against real German bunds during stress periods (e.g. the
-2012 euro crisis). The separate 2Y10Y spread endpoint for Germany uses
-real Bundesbank data and is correct. Fixing the full-curve fetch to also
-use Bundesbank is tracked in `docs/roadmap.md`. Details on every other
-data-source quirk are in `docs/landmines.md`.
+**Known data caveats:**
+- Germany's full-curve endpoint currently uses the ECB's euro-area AAA
+  composite as a stand-in, which has been confirmed off by up to +71bp
+  against real German bunds during stress periods (e.g. the 2012 euro
+  crisis). The separate 2Y10Y spread endpoint for Germany uses real
+  Bundesbank data and is correct. Fixing the full-curve fetch to also use
+  Bundesbank is tracked in `docs/roadmap.md`.
+- That same Bundesbank source (the correct one, used for the Germany
+  spread) is a legacy SDMX API with an uncertain long-term future — its
+  own documentation page currently 404s, suggesting a migration or
+  retirement is underway, with no confirmed shutdown date.
+- Canada, Switzerland, and Japan curve data hasn't been independently
+  re-verified for correctness since it was first added — treat it with
+  the same caution as an unaudited data source until confirmed.
+
+Details on every other data-source quirk are in `docs/landmines.md`.
 
 ## Setup
 
